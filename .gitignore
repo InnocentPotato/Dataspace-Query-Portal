@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build
+/gui/build
+/gui/dist
+*.log
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Data
+data/*.ttl
+!data/sample-data.ttl
+
+# Temporary
+/tmp
+/temp
+.cache

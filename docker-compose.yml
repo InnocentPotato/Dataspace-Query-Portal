@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # Provider Fuseki Server
+  fuseki-provider:
+    image: stain/jena-fuseki:latest
+    container_name: fuseki-provider
+    ports:
+      - "3030:3030"
+    environment:
+      - FUSEKI_ADMIN=admin
+    volumes:
+      - ./data/sample-data.ttl:/staging/sample-data.ttl
+      - fuseki-provider-data:/fuseki
+    command: |
+      /bin/bash -c "
+      /docker-entrypoint.sh &
+      sleep 10 &&
+      curl -X POST http://localhost:3030/$/datasets -d 'dbName=provider-ds&dbType=TDB2' &&
+      curl -X POST http://localhost:3030/$/datasets -d 'dbName=consumer-ds&dbType=TDB2' &&
+      curl -X POST http://localhost:3030/provider-ds/upload -F 'files=@/staging/sample-data.ttl' &&
+      wait
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3030/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Consumer Fuseki Server
+  fuseki-consumer:
+    image: stain/jena-fuseki:latest
+    container_name: fuseki-consumer
+    ports:
+      - "3031:3030"
+    environment:
+      - FUSEKI_ADMIN=admin
+    volumes:
+      - ./data/sample-data.ttl:/staging/sample-data.ttl
+      - fuseki-consumer-data:/fuseki
+    command: |
+      /bin/bash -c "
+      /docker-entrypoint.sh &
+      sleep 10 &&
+      curl -X POST http://localhost:3030/$/datasets -d 'dbName=consumer-ds&dbType=TDB2' &&
+      curl -X POST http://localhost:3030/consumer-ds/upload -F 'files=@/staging/sample-data.ttl' &&
+      wait
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3030/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # EDC Provider Connector (simplified mock)
+  edc-provider:
+    image: node:18-alpine
+    container_name: edc-provider
+    ports:
+      - "9191:9191"
+    working_dir: /app
+    volumes:
+      - ./edc:/app
+    command: npm start
+    depends_on:
+      - fuseki-provider
+    environment:
+      - PORT=9191
+      - FUSEKI_URL=http://fuseki-provider:3030/provider-ds
+
+  # EDC Consumer Connector (simplified mock)
+  edc-consumer:
+    image: node:18-alpine
+    container_name: edc-consumer
+    ports:
+      - "9192:9192"
+    working_dir: /app
+    volumes:
+      - ./edc:/app
+    command: npm start
+    depends_on:
+      - fuseki-consumer
+    environment:
+      - PORT=9192
+      - FUSEKI_URL=http://fuseki-consumer:3030/consumer-ds
+
+volumes:
+  fuseki-provider-data:
+  fuseki-consumer-data:
+
+networks:
+  default:
+    name: dataspace-network

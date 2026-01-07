@@ -1,0 +1,14 @@
+{
+  "name": "edc-connector-mock",
+  "version": "1.0.0",
+  "description": "Simplified EDC Connector Mock for dataspace queries",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "cors": "^2.8.5"
+  }
+}

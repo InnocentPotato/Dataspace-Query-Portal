@@ -1,0 +1,64 @@
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Sample Person Data
+ex:person1 rdf:type foaf:Person ;
+    foaf:name "Alice Johnson"^^xsd:string ;
+    foaf:email "alice@example.org"^^xsd:string ;
+    foaf:age "30"^^xsd:integer ;
+    foaf:knows ex:person2 ;
+    rdfs:comment "Senior Software Engineer"^^xsd:string .
+
+ex:person2 rdf:type foaf:Person ;
+    foaf:name "Bob Smith"^^xsd:string ;
+    foaf:email "bob@example.org"^^xsd:string ;
+    foaf:age "28"^^xsd:integer ;
+    foaf:knows ex:person1, ex:person3 ;
+    rdfs:comment "Data Scientist"^^xsd:string .
+
+ex:person3 rdf:type foaf:Person ;
+    foaf:name "Carol White"^^xsd:string ;
+    foaf:email "carol@example.org"^^xsd:string ;
+    foaf:age "35"^^xsd:integer ;
+    foaf:knows ex:person1 ;
+    rdfs:comment "Product Manager"^^xsd:string .
+
+# Organization Data
+ex:company1 rdf:type foaf:Organization ;
+    foaf:name "Tech Solutions Inc"^^xsd:string ;
+    foaf:homepage <http://techsolutions.example.org> ;
+    rdfs:comment "Leading technology company"^^xsd:string .
+
+# Sample Projects
+ex:project1 rdf:type ex:Project ;
+    rdfs:label "Data Portal Platform"^^xsd:string ;
+    ex:hasDescription "Building a modern data query portal"^^xsd:string ;
+    ex:hasOwner ex:person1 ;
+    ex:hasTeamMember ex:person1, ex:person2 ;
+    ex:status "active"^^xsd:string .
+
+ex:project2 rdf:type ex:Project ;
+    rdfs:label "Analytics Engine"^^xsd:string ;
+    ex:hasDescription "Advanced analytics and reporting"^^xsd:string ;
+    ex:hasOwner ex:person2 ;
+    ex:hasTeamMember ex:person2, ex:person3 ;
+    ex:status "planning"^^xsd:string .
+
+# Properties and their domains
+ex:Project rdfs:comment "A project resource"^^xsd:string ;
+    rdf:type rdfs:Class .
+
+ex:hasDescription rdfs:domain ex:Project ;
+    rdfs:range xsd:string ;
+    rdfs:label "has description"^^xsd:string .
+
+ex:hasOwner rdfs:domain ex:Project ;
+    rdfs:range foaf:Person ;
+    rdfs:label "has owner"^^xsd:string .
+
+ex:hasTeamMember rdfs:domain ex:Project ;
+    rdfs:range foaf:Person ;
+    rdfs:label "has team member"^^xsd:string .
