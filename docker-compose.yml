@@ -7,20 +7,9 @@ services:
     container_name: fuseki-provider
     ports:
       - "3030:3030"
-    environment:
-      - FUSEKI_ADMIN=admin
     volumes:
       - ./data/sample-data.ttl:/staging/sample-data.ttl
       - fuseki-provider-data:/fuseki
-    command: |
-      /bin/bash -c "
-      /docker-entrypoint.sh &
-      sleep 10 &&
-      curl -X POST http://localhost:3030/$/datasets -d 'dbName=provider-ds&dbType=TDB2' &&
-      curl -X POST http://localhost:3030/$/datasets -d 'dbName=consumer-ds&dbType=TDB2' &&
-      curl -X POST http://localhost:3030/provider-ds/upload -F 'files=@/staging/sample-data.ttl' &&
-      wait
-      "
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3030/"]
       interval: 10s
@@ -33,19 +22,9 @@ services:
     container_name: fuseki-consumer
     ports:
       - "3031:3030"
-    environment:
-      - FUSEKI_ADMIN=admin
     volumes:
       - ./data/sample-data.ttl:/staging/sample-data.ttl
       - fuseki-consumer-data:/fuseki
-    command: |
-      /bin/bash -c "
-      /docker-entrypoint.sh &
-      sleep 10 &&
-      curl -X POST http://localhost:3030/$/datasets -d 'dbName=consumer-ds&dbType=TDB2' &&
-      curl -X POST http://localhost:3030/consumer-ds/upload -F 'files=@/staging/sample-data.ttl' &&
-      wait
-      "
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3030/"]
       interval: 10s
