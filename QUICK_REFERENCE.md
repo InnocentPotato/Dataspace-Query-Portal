@@ -26,7 +26,7 @@ npm start --prefix gui
 
 ---
 
-## 🌐 Access URLs
+##  Access URLs
 
 | What | URL |
 |------|-----|
@@ -37,7 +37,7 @@ npm start --prefix gui
 
 ---
 
-## 📝 Sample SPARQL Queries
+##  Sample SPARQL Queries
 
 ### Get All Data (10 results)
 ```sparql
@@ -112,7 +112,7 @@ curl http://localhost:5000/api/datasources/datasource-0/stats
 
 ---
 
-## 🐳 Docker Commands
+##  Docker Commands
 
 ```bash
 # Start all services
@@ -133,7 +133,7 @@ docker-compose down -v
 
 ---
 
-## 🛠️ Common Fixes
+##  Common Fixes
 
 ### "Connection Refused" Error
 ```bash
@@ -168,7 +168,7 @@ npm start --prefix gui
 
 ---
 
-## 📂 File Locations
+##  File Locations
 
 | Component | Location |
 |-----------|----------|
@@ -180,7 +180,7 @@ npm start --prefix gui
 
 ---
 
-## 📖 Documentation Map
+## Documentation Map
 
 | Need | Read |
 |------|------|
@@ -194,7 +194,7 @@ npm start --prefix gui
 
 ---
 
-## 🔍 Debugging Tips
+## Debugging Tips
 
 ### Check Backend Logs
 ```bash
@@ -227,7 +227,7 @@ curl http://localhost:9191/health       # EDC 1
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 ### API Configuration
 ```bash
@@ -241,7 +241,7 @@ Set in: `api/.env`
 
 ---
 
-## 🎯 Common Tasks
+## Common Tasks
 
 ### Change API Port
 Edit `api/server.js`, line with `const PORT`
@@ -261,7 +261,7 @@ curl "http://localhost:3030/provider-ds/sparql?query=SELECT%20%28COUNT%28*%29%20
 
 ---
 
-## 📊 Query Examples by Type
+## Query Examples by Type
 
 ### SELECT (Most Common)
 ```sparql
@@ -285,7 +285,7 @@ DESCRIBE ?s WHERE { ?s a foaf:Person LIMIT 1 }
 
 ---
 
-## 🚨 Emergency Commands
+## Emergency Commands
 
 ### Kill Everything & Start Fresh
 ```bash
@@ -314,7 +314,7 @@ npm install
 
 ---
 
-## ✅ Verification Checklist
+## Verification Checklist
 
 - [ ] `docker-compose ps` shows 4 running containers
 - [ ] `curl http://localhost:5000/health` returns OK
@@ -326,39 +326,7 @@ npm install
 
 ---
 
-## 💡 Pro Tips
-
-1. **Use Templates** - Faster than writing queries from scratch
-2. **Test in Fuseki UI** - Before testing in portal
-3. **Check Logs** - Always look at logs when something fails
-4. **Query All** - Try "Query all datasources" to see parallel execution
-5. **Clean Restart** - If stuck, stop everything and start fresh
-6. **Read Docs** - Most issues are answered in documentation
-
----
-
-## 🎓 Learning Resources
-
-- **SPARQL Tutorial**: https://www.w3.org/TR/sparql11-query/
-- **RDF Spec**: https://www.w3.org/RDF/
-- **Apache Jena**: https://jena.apache.org/
-- **Eclipse EDC**: https://github.com/eclipse-edc/docs
-- **React Docs**: https://react.dev/
-- **Express Guide**: https://expressjs.com/
-
----
-
-## 📞 Need Help?
-
-1. **Check**: TROUBLESHOOTING.md
-2. **Read**: SETUP.md
-3. **Review**: ARCHITECTURE.md
-4. **Examine**: Sample queries in GUI
-5. **Test**: Each service individually
-
----
-
-## 🎉 Success Indicators
+## Success Indicators
 
 - ✅ Can run `./start.sh` without errors
 - ✅ All 4 Docker services running
@@ -371,10 +339,3 @@ npm install
 
 ---
 
-**Status**: Ready to Use ✅
-**Time to First Query**: ~5 minutes
-**Time to Full Understanding**: ~2 hours
-
----
-
-**Print this page for quick reference!**

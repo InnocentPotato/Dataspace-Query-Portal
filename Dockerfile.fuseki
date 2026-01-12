@@ -1,0 +1,14 @@
+FROM stain/jena-fuseki:latest
+
+# Disable authentication and set proper permissions
+ENV FUSEKI_OPTS="-Dorg.apache.jena.fuseki.mgtServiceAuthenticationRequired=false"
+
+# Copy shiro.ini to disable auth
+COPY shiro.ini /etc/fuseki/shiro.ini
+
+# Ensure dataset directory is writable
+RUN chmod -R 777 /fuseki
+
+EXPOSE 3030
+
+# Do not override the base image CMD — let the original image start Fuseki

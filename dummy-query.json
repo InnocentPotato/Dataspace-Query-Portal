@@ -1,0 +1,4 @@
+{
+  "datasourceId": "datasource-0",
+  "sparqlQuery": "SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . } LIMIT 10"
+}

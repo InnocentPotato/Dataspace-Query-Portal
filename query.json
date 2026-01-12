@@ -1,0 +1,4 @@
+{
+  "datasourceId": "datasource-0",
+  "sparqlQuery": "SELECT ?driver ?firstName ?lastName WHERE { ?driver a <http://f1.example.org/Driver> ; <http://f1.example.org/firstName> ?firstName ; <http://f1.example.org/lastName> ?lastName . } LIMIT 3"
+}

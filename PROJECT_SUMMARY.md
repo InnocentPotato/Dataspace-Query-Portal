@@ -2,7 +2,7 @@
 
 ## What Has Been Created
 
-A complete **Dataspace Query Portal** system for querying Apache Jena RDF data through an Eclipse Dataspace Connector (EDC) with a modern web interface.
+A Demonstration of a **Dataspace Query Portal** system for querying Apache Jena RDF data through an Eclipse Dataspace Connector (EDC) with a modern web interface.
 
 ## Components
 
@@ -86,27 +86,27 @@ Dataspace-Query-Portal/
 
 ## Key Features
 
-✅ **Query Capabilities**
+ **Query Capabilities**
 - SPARQL SELECT, CONSTRUCT, DESCRIBE, ASK queries
 - Query templates for quick start
 - Multi-datasource parallel queries
 - Real-time result display
 
-✅ **User Interface**
+ **User Interface**
 - Responsive web portal
 - Intuitive query builder
 - Multiple result formats (table, JSON)
 - Data source browser
 - Statistics and catalog viewing
 
-✅ **Architecture**
+ **Architecture**
 - Clean separation of concerns
 - Stateless API design
 - Docker containerization
 - Scalable structure
 - Easy to extend
 
-✅ **Developer Experience**
+ **Developer Experience**
 - Clear documentation
 - Sample data provided
 - Quick start scripts
@@ -179,7 +179,7 @@ All sample queries are built-in to the GUI. Try these:
 
 ## Current Limitations
 
-⚠️ **Development-Only Features:**
+ **Development-Only Features:**
 - No policy enforcement
 - No governance policies
 - No digital signatures
@@ -251,16 +251,4 @@ To move to production, you should:
 - **Architecture**: See [ARCHITECTURE.md](ARCHITECTURE.md)
 - **EDC**: See [EDC.md](EDC.md)
 
-## License
 
-MIT License - Feel free to use and modify
-
-## Contact
-
-For questions or issues, please refer to the documentation or open an issue.
-
----
-
-**Created**: January 2026
-**Status**: Ready for Development & Testing
-**Version**: 1.0.0

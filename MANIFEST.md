@@ -6,7 +6,7 @@
 
 ---
 
-## 📚 Documentation Files (10)
+## Documentation Files (10)
 
 ```
 START_HERE.md                    # ⭐ START HERE - Main entry point
@@ -24,7 +24,7 @@ INDEX.md                        # Documentation navigation
 
 ---
 
-## 🎨 Frontend - React GUI (11 files)
+## Frontend - React GUI (11 files)
 
 ### Components
 ```
@@ -74,7 +74,7 @@ api/.env.example                 # Configuration template
 
 ---
 
-## 🌐 EDC Connector - Node.js (2 files)
+## EDC Connector - Node.js (2 files)
 
 ```
 edc/index.js                     # EDC connector implementation
@@ -92,7 +92,7 @@ edc/package.json                 # Dependencies & scripts
 
 ---
 
-## 💾 Data & Configuration (4 files)
+## Data & Configuration (4 files)
 
 ```
 data/sample-data.ttl             # RDF sample data (Turtle format)
@@ -102,7 +102,7 @@ docker-compose.yml               # Docker orchestration
 
 ---
 
-## 🚀 Quick Start Scripts (2 files)
+## Quick Start Scripts (2 files)
 
 ```
 start.sh                         # Startup for Linux/Mac
@@ -111,7 +111,7 @@ start.bat                        # Startup for Windows
 
 ---
 
-## 📊 Summary by Type
+## Summary by Type
 
 | Type | Count | Purpose |
 |------|-------|---------|
@@ -129,12 +129,12 @@ start.bat                        # Startup for Windows
 
 ---
 
-## 🗂️ Directory Structure
+## Directory Structure
 
 ```
 Dataspace-Query-Portal/
 │
-├── 📖 Documentation (10 files)
+├──  Documentation (10 files)
 │   ├── START_HERE.md                    ⭐ READ THIS FIRST
 │   ├── README.md
 │   ├── SETUP.md
@@ -147,7 +147,7 @@ Dataspace-Query-Portal/
 │   ├── QUICK_REFERENCE.md
 │   └── INDEX.md
 │
-├── 🎨 Frontend (gui/) 11 files
+├──  Frontend (gui/) 11 files
 │   ├── package.json
 │   ├── public/
 │   │   └── index.html
@@ -165,16 +165,16 @@ Dataspace-Query-Portal/
 │           ├── ResultsViewer.css
 │           └── DataSourceManager.css
 │
-├── 🔌 Backend (api/) 3 files
+├──  Backend (api/) 3 files
 │   ├── server.js
 │   ├── package.json
 │   └── .env.example
 │
-├── 🌐 Connector (edc/) 2 files
+├──  Connector (edc/) 2 files
 │   ├── index.js
 │   └── package.json
 │
-├── 💾 Data & Config (5 files)
+├──  Data & Config (5 files)
 │   ├── data/
 │   │   └── sample-data.ttl
 │   ├── docker-compose.yml
@@ -187,7 +187,7 @@ Dataspace-Query-Portal/
 
 ---
 
-## 📈 Code Statistics
+## Code Statistics
 
 ```
 Backend API:
@@ -223,7 +223,7 @@ Documentation:
 
 ---
 
-## 🔄 Dependencies Overview
+## Dependencies Overview
 
 ### Backend API (api/package.json)
 ```json
@@ -258,7 +258,7 @@ Documentation:
 
 ---
 
-## 🐳 Docker Services
+## Docker Services
 
 ```
 Services in docker-compose.yml:
@@ -274,9 +274,9 @@ Plus manual services:
 
 ---
 
-## ✅ File Verification Checklist
+## File Verification Checklist
 
-### Documentation Files ✅
+### Documentation Files 
 - [x] START_HERE.md
 - [x] README.md
 - [x] SETUP.md
@@ -289,12 +289,12 @@ Plus manual services:
 - [x] QUICK_REFERENCE.md
 - [x] INDEX.md
 
-### Backend API ✅
+### Backend API 
 - [x] api/server.js
 - [x] api/package.json
 - [x] api/.env.example
 
-### Frontend GUI ✅
+### Frontend GUI 
 - [x] gui/package.json
 - [x] gui/public/index.html
 - [x] gui/src/App.js
@@ -308,22 +308,22 @@ Plus manual services:
 - [x] gui/src/styles/ResultsViewer.css
 - [x] gui/src/styles/DataSourceManager.css
 
-### EDC Connector ✅
+### EDC Connector 
 - [x] edc/index.js
 - [x] edc/package.json
 
-### Data & Configuration ✅
+### Data & Configuration 
 - [x] data/sample-data.ttl
 - [x] docker-compose.yml
 - [x] .gitignore
 
-### Quick Start Scripts ✅
+### Quick Start Scripts 
 - [x] start.sh
 - [x] start.bat
 
 ---
 
-## 🎯 What Each File Does
+## What Each File Does
 
 ### Essential Documentation
 - **START_HERE.md** - Main entry point, read first
@@ -364,7 +364,7 @@ Plus manual services:
 
 ---
 
-## 📦 Installation Requirements
+## Installation Requirements
 
 ### System Requirements
 - Node.js 18+
@@ -391,7 +391,7 @@ Plus manual services:
 
 ---
 
-## 📞 File Organization Tips
+## File Organization Tips
 
 ### If You Want to...
 
@@ -418,26 +418,26 @@ Plus manual services:
 
 ---
 
-## ✨ Special Files
+## Special Files
 
-### ⭐ START_HERE.md
+### START_HERE.md
 The main entry point. Everyone should read this first.
 
-### 📋 MANIFEST (this file)
+### MANIFEST (this file)
 Complete inventory of all files and what they do.
 
-### 🚀 start.sh / start.bat
+### start.sh / start.bat
 One-command startup. Handles installation and launching.
 
-### 📚 INDEX.md
+### INDEX.md
 Navigation hub for all documentation.
 
-### 🆘 TROUBLESHOOTING.md
+### TROUBLESHOOTING.md
 Solutions to common problems.
 
 ---
 
-## 📝 Version Control
+## Version Control
 
 All files are ready for Git:
 - `.gitignore` configured
@@ -447,23 +447,7 @@ All files are ready for Git:
 
 ---
 
-## 🎊 Everything Is Here
-
-You have everything needed to:
-✅ Understand the system
-✅ Run the system
-✅ Modify the system
-✅ Deploy the system
-✅ Troubleshoot issues
-✅ Learn from the code
-
-**No additional files needed.**
-**No missing dependencies.**
-**No external downloads required** (except npm packages).
-
----
-
-## 📊 Final Count
+## Final Count
 
 ```
 Documentation:      10 files
@@ -476,12 +460,3 @@ Scripts:            2 files
 ─────────────────────────────
 TOTAL:              34 files
 ```
-
-**Status**: ✅ Complete
-**Quality**: ✅ Production Ready
-**Documentation**: ✅ Comprehensive
-**Support**: ✅ Extensive
-
----
-
-**Everything is ready. Pick a file and start!**

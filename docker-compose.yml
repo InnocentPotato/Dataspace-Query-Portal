@@ -3,13 +3,19 @@ version: '3.8'
 services:
   # Provider Fuseki Server
   fuseki-provider:
-    image: stain/jena-fuseki:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.fuseki
     container_name: fuseki-provider
     ports:
       - "3030:3030"
     volumes:
       - ./data/sample-data.ttl:/staging/sample-data.ttl
+      - ./shiro.ini:/etc/fuseki/shiro.ini
       - fuseki-provider-data:/fuseki
+    environment:
+      - ADMIN_PASSWORD=admin123
+      - FUSEKI_OPTS=-Dorg.apache.jena.fuseki.mgtServiceAuthenticationRequired=false
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3030/"]
       interval: 10s
@@ -18,13 +24,19 @@ services:
 
   # Consumer Fuseki Server
   fuseki-consumer:
-    image: stain/jena-fuseki:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.fuseki
     container_name: fuseki-consumer
     ports:
       - "3031:3030"
     volumes:
       - ./data/sample-data.ttl:/staging/sample-data.ttl
+      - ./shiro.ini:/etc/fuseki/shiro.ini
       - fuseki-consumer-data:/fuseki
+    environment:
+      - ADMIN_PASSWORD=admin123
+      - FUSEKI_OPTS=-Dorg.apache.jena.fuseki.mgtServiceAuthenticationRequired=false
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3030/"]
       interval: 10s
