@@ -68,6 +68,9 @@ app.post('/api/query', async (req, res) => {
     }
 
     // Execute SPARQL query
+    console.log('Executing query on:', endpoint);
+    console.log('Query:', query);
+    
     const response = await axios.get(`${endpoint}/sparql`, {
       params: {
         query: query,
@@ -86,6 +89,7 @@ app.post('/api/query', async (req, res) => {
     });
   } catch (error) {
     console.error('Query error:', error.message);
+    console.error('Error details:', error.response?.data || error.stack);
     res.status(500).json({ 
       error: error.message,
       details: error.response?.data || null
@@ -238,6 +242,16 @@ app.use((err, req, res, next) => {
     error: 'Internal server error',
     message: err.message 
   });
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
 });
 
 const PORT = process.env.PORT || 5000;

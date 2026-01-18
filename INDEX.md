@@ -1,6 +1,6 @@
 # Dataspace Query Portal - Complete Documentation Index
 
-## 📚 Documentation Map
+## Documentation Map
 
 ### Getting Started
 1. **[README.md](README.md)** - Project overview and quick start
@@ -19,39 +19,39 @@
 
 ---
 
-## 🎯 Quick Navigation by Task
+## Quick Navigation by Task
 
 ### I want to...
 
 #### 📖 Learn what this project does
 → Start with [README.md](README.md)
 
-#### 🚀 Get it running immediately  
+#### Get it running immediately  
 → Follow [SETUP.md](SETUP.md) **OR** run `./start.sh` (Linux/Mac) or `start.bat` (Windows)
 
-#### 🏗️ Understand the architecture
+#### Understand the architecture
 → Read [ARCHITECTURE.md](ARCHITECTURE.md) + [VISUAL_GUIDE.md](VISUAL_GUIDE.md)
 
-#### 🔌 Use the API
+#### Use the API
 → Check [API.md](API.md) for all endpoints and examples
 
-#### 🌐 Configure the dataspace connector
+#### Configure the dataspace connector
 → See [EDC.md](EDC.md)
 
-#### ❌ Fix a problem
+#### Fix a problem
 → Browse [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 
-#### 💡 See what's implemented
+#### See what's implemented
 → Review [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)
 
 ---
 
-## 📋 File Structure Reference
+## File Structure Reference
 
 ```
 Dataspace-Query-Portal/
 │
-├── 📖 Documentation
+├──  Documentation
 │   ├── README.md                  # Project overview
 │   ├── SETUP.md                   # Installation guide
 │   ├── API.md                     # API documentation
@@ -62,11 +62,11 @@ Dataspace-Query-Portal/
 │   ├── TROUBLESHOOTING.md        # Problem solutions
 │   └── this file (INDEX.md)      # You are here
 │
-├── 🚀 Quick Start
+├──  Quick Start
 │   ├── start.sh                  # Linux/Mac starter
 │   └── start.bat                 # Windows starter
 │
-├── 🎨 Frontend (React)
+├──  Frontend (React)
 │   └── gui/
 │       ├── public/
 │       │   └── index.html
@@ -85,31 +85,31 @@ Dataspace-Query-Portal/
 │       │   └── index.css         # Global styles
 │       └── package.json          # Dependencies
 │
-├── 🔌 Backend API (Node.js)
+├──  Backend API (Node.js)
 │   └── api/
 │       ├── server.js             # Express app
 │       ├── package.json          # Dependencies
 │       └── .env.example          # Config template
 │
-├── 🌐 EDC Connector
+├──  EDC Connector
 │   └── edc/
 │       ├── index.js              # Connector implementation
 │       └── package.json          # Dependencies
 │
-├── 💾 Sample Data
+├──  Sample Data
 │   └── data/
 │       └── sample-data.ttl       # RDF test data
 │
-├── 🐳 Docker
+├──  Docker
 │   └── docker-compose.yml        # Container setup
 │
-└── 📚 Configuration
+└──  Configuration
     └── .gitignore                # Git ignore rules
 ```
 
 ---
 
-## 🔄 Development Workflow
+## Development Workflow
 
 ### First Time Setup
 
@@ -157,7 +157,7 @@ Data changes:
 
 ---
 
-## 🎓 Learning Paths
+## Learning Paths
 
 ### Path 1: Quick Demo (30 minutes)
 1. Run `./start.sh` or `start.bat`
@@ -191,7 +191,7 @@ Data changes:
 
 ---
 
-## 🔍 Key Concepts Explained
+## Key Concepts Explained
 
 ### SPARQL
 - **What**: Query language for RDF data
@@ -224,7 +224,7 @@ Data changes:
 
 ---
 
-## 🛠️ Common Customizations
+## Common Customizations
 
 ### Change API Port
 Edit `api/server.js`:
@@ -262,7 +262,7 @@ const templates = {
 
 ---
 
-## 🚨 If Something Goes Wrong
+## If Something Goes Wrong
 
 ### Step 1: Identify the Issue
 - Check browser console (F12)
@@ -311,7 +311,7 @@ docker-compose up -d
 
 ---
 
-## 📞 Getting Help
+## Getting Help
 
 ### Check These Resources (in order)
 
@@ -321,43 +321,8 @@ docker-compose up -d
 4. **[API.md](API.md)** - API usage
 5. **[ARCHITECTURE.md](ARCHITECTURE.md)** - System design
 
-### Debug Information to Collect
 
-If asking for help, provide:
-```
-1. OS and version
-2. Docker version: docker --version
-3. Node version: node --version
-4. Error message (full text)
-5. What you were doing when error occurred
-6. Relevant log output
-```
-
----
-
-## 📈 Next Steps After Getting It Running
-
-1. **Explore the UI** - Try different queries
-2. **Read the API docs** - Understand endpoints
-3. **Study the code** - How it works
-4. **Modify sample data** - Add your own RDF
-5. **Create custom queries** - Test your use case
-6. **Plan production** - Think about deployment
-7. **Add features** - Extend functionality
-
----
-
-## 🎯 Version Information
-
-- **Project Version**: 1.0.0
-- **Created**: January 2026
-- **Status**: Ready for Development & Testing
-- **Technologies**: React 18, Node.js 18+, Docker, Apache Jena
-- **License**: MIT
-
----
-
-## 📝 Document Maintenance
+## Document Maintenance
 
 | Document | Last Updated | Maintainer |
 |----------|--------------|-----------|
@@ -371,7 +336,7 @@ If asking for help, provide:
 
 ---
 
-## 🌟 Credits
+## Credits
 
 - **React** - Frontend framework
 - **Express.js** - Backend framework

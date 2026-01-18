@@ -1,0 +1,13 @@
+FROM stain/jena-fuseki:latest
+
+USER root
+
+# Set a simple admin password
+ENV ADMIN_PASSWORD=pw
+
+# Ensure dataset directory is writable
+RUN chmod -R 777 /fuseki
+
+EXPOSE 3030
+
+# Use the default Fuseki entrypoint (datasets will be created via environment variables)

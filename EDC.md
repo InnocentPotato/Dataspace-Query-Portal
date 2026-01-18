@@ -36,10 +36,10 @@ This implementation focuses on **data querying** without:
 - ❌ Audit logging
 
 For production use, consider implementing:
-- ✅ Authentication and authorization
-- ✅ Usage policies
-- ✅ Data governance
-- ✅ Compliance tracking
+- Authentication and authorization
+- Usage policies
+- Data governance
+- Compliance tracking
 
 ## API Endpoints
 
