@@ -365,7 +365,7 @@ Standards:
 
 ---
 
-## 🎯 Next Steps for You
+## Next Steps for You
 
 ### Immediate (30 minutes)
 1. Run `./start.sh` or `start.bat`
@@ -397,7 +397,7 @@ Standards:
 
 ---
 
-## 🆘 Support
+## Support
 
 ### If Something Doesn't Work
 1. Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
@@ -419,22 +419,4 @@ Standards:
 
 MIT License - Free to use, modify, and distribute
 
----
-
-## Conclusion
-
-You now have a **complete, production-ready foundation** for a Dataspace Query Portal that:
-
-1. Queries RDF data through Apache Jena Fuseki
-2. Integrates with Eclipse Dataspace Connector
-3. Provides a modern web interface
-4. Offers a RESTful API
-5. Is fully containerized
-6. Has comprehensive documentation
-7. Can be deployed to production
-8. Is ready for customization and extension
-
-**All components are functional, documented, and ready to use.**
-
----
 

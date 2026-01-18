@@ -10,44 +10,139 @@ ex:person1 rdf:type foaf:Person ;
     foaf:email "alice@example.org"^^xsd:string ;
     foaf:age "30"^^xsd:integer ;
     foaf:knows ex:person2 ;
-    rdfs:comment "Senior Software Engineer"^^xsd:string .
+    rdfs:comment "Senior Software Engineer"^^xsd:string ;
+    ex:department "Engineering"^^xsd:string ;
+    ex:salary "95000"^^xsd:integer .
 
 ex:person2 rdf:type foaf:Person ;
     foaf:name "Bob Smith"^^xsd:string ;
     foaf:email "bob@example.org"^^xsd:string ;
     foaf:age "28"^^xsd:integer ;
     foaf:knows ex:person1, ex:person3 ;
-    rdfs:comment "Data Scientist"^^xsd:string .
+    rdfs:comment "Data Scientist"^^xsd:string ;
+    ex:department "Analytics"^^xsd:string ;
+    ex:salary "88000"^^xsd:integer .
 
 ex:person3 rdf:type foaf:Person ;
     foaf:name "Carol White"^^xsd:string ;
     foaf:email "carol@example.org"^^xsd:string ;
     foaf:age "35"^^xsd:integer ;
     foaf:knows ex:person1 ;
-    rdfs:comment "Product Manager"^^xsd:string .
+    rdfs:comment "Product Manager"^^xsd:string ;
+    ex:department "Product"^^xsd:string ;
+    ex:salary "102000"^^xsd:integer .
+
+ex:person4 rdf:type foaf:Person ;
+    foaf:name "David Chen"^^xsd:string ;
+    foaf:email "david@example.org"^^xsd:string ;
+    foaf:age "32"^^xsd:integer ;
+    foaf:knows ex:person2, ex:person3 ;
+    rdfs:comment "UX Designer"^^xsd:string ;
+    ex:department "Design"^^xsd:string ;
+    ex:salary "85000"^^xsd:integer .
+
+ex:person5 rdf:type foaf:Person ;
+    foaf:name "Emma Davis"^^xsd:string ;
+    foaf:email "emma@example.org"^^xsd:string ;
+    foaf:age "29"^^xsd:integer ;
+    foaf:knows ex:person1, ex:person4 ;
+    rdfs:comment "DevOps Engineer"^^xsd:string ;
+    ex:department "Engineering"^^xsd:string ;
+    ex:salary "90000"^^xsd:integer .
 
 # Organization Data
 ex:company1 rdf:type foaf:Organization ;
     foaf:name "Tech Solutions Inc"^^xsd:string ;
     foaf:homepage <http://techsolutions.example.org> ;
-    rdfs:comment "Leading technology company"^^xsd:string .
+    rdfs:comment "Leading technology company"^^xsd:string ;
+    ex:founded "2015"^^xsd:integer ;
+    ex:employeeCount "250"^^xsd:integer .
+
+ex:company2 rdf:type foaf:Organization ;
+    foaf:name "Data Dynamics Ltd"^^xsd:string ;
+    foaf:homepage <http://datadynamics.example.org> ;
+    rdfs:comment "Data analytics and AI company"^^xsd:string ;
+    ex:founded "2018"^^xsd:integer ;
+    ex:employeeCount "120"^^xsd:integer .
 
 # Sample Projects
 ex:project1 rdf:type ex:Project ;
     rdfs:label "Data Portal Platform"^^xsd:string ;
     ex:hasDescription "Building a modern data query portal"^^xsd:string ;
     ex:hasOwner ex:person1 ;
-    ex:hasTeamMember ex:person1, ex:person2 ;
-    ex:status "active"^^xsd:string .
+    ex:hasTeamMember ex:person1, ex:person2, ex:person5 ;
+    ex:status "active"^^xsd:string ;
+    ex:startDate "2025-01-01"^^xsd:date ;
+    ex:budget "250000"^^xsd:integer .
 
 ex:project2 rdf:type ex:Project ;
     rdfs:label "Analytics Engine"^^xsd:string ;
     ex:hasDescription "Advanced analytics and reporting"^^xsd:string ;
     ex:hasOwner ex:person2 ;
     ex:hasTeamMember ex:person2, ex:person3 ;
-    ex:status "planning"^^xsd:string .
+    ex:status "planning"^^xsd:string ;
+    ex:startDate "2026-03-01"^^xsd:date ;
+    ex:budget "180000"^^xsd:integer .
+
+ex:project3 rdf:type ex:Project ;
+    rdfs:label "UI Redesign"^^xsd:string ;
+    ex:hasDescription "Complete user interface overhaul"^^xsd:string ;
+    ex:hasOwner ex:person3 ;
+    ex:hasTeamMember ex:person3, ex:person4 ;
+    ex:status "active"^^xsd:string ;
+    ex:startDate "2025-11-15"^^xsd:date ;
+    ex:budget "95000"^^xsd:integer .
+
+# Product Data
+ex:product1 rdf:type ex:Product ;
+    rdfs:label "Cloud Data Connector"^^xsd:string ;
+    ex:hasDescription "Seamless cloud data integration"^^xsd:string ;
+    ex:price "4999"^^xsd:integer ;
+    ex:category "Software"^^xsd:string ;
+    ex:inStock "true"^^xsd:boolean .
+
+ex:product2 rdf:type ex:Product ;
+    rdfs:label "Analytics Dashboard Pro"^^xsd:string ;
+    ex:hasDescription "Professional analytics visualization"^^xsd:string ;
+    ex:price "2999"^^xsd:integer ;
+    ex:category "Software"^^xsd:string ;
+    ex:inStock "true"^^xsd:boolean .
+
+ex:product3 rdf:type ex:Product ;
+    rdfs:label "Data Security Suite"^^xsd:string ;
+    ex:hasDescription "Comprehensive data security tools"^^xsd:string ;
+    ex:price "7999"^^xsd:integer ;
+    ex:category "Software"^^xsd:string ;
+    ex:inStock "false"^^xsd:boolean .
+
+# Department Data
+ex:dept1 rdf:type ex:Department ;
+    rdfs:label "Engineering"^^xsd:string ;
+    ex:headCount "45"^^xsd:integer ;
+    ex:manager ex:person1 .
+
+ex:dept2 rdf:type ex:Department ;
+    rdfs:label "Analytics"^^xsd:string ;
+    ex:headCount "22"^^xsd:integer ;
+    ex:manager ex:person2 .
+
+ex:dept3 rdf:type ex:Department ;
+    rdfs:label "Product"^^xsd:string ;
+    ex:headCount "18"^^xsd:integer ;
+    ex:manager ex:person3 .
 
 # Properties and their domains
+ex:hasDescription rdfs:domain ex:Project ;
+    rdfs:range xsd:string .
+
+ex:hasOwner rdfs:domain ex:Project ;
+    rdfs:range foaf:Person .
+
+ex:hasTeamMember rdfs:domain ex:Project ;
+    rdfs:range foaf:Person .
+
+ex:status rdfs:domain ex:Project ;
+    rdfs:range xsd:string .
 ex:Project rdfs:comment "A project resource"^^xsd:string ;
     rdf:type rdfs:Class .
 

@@ -1,49 +1,53 @@
 # Setup Guide
 
-This guide explains how to set up and run the Dataspace Query Portal locally.
+This document provides setup instructions for running the Dataspace Query Portal in a local development environment.
 
 ## Prerequisites
 
-- Node.js 18 or higher and npm
-- Docker and Docker Compose installed and running
-- Git (for cloning the repository)
-- About 2-3 GB of available disk space for Docker images
+- Node.js 18+ with npm
+- Docker Desktop with Docker Compose
+- Git
+- Minimum 2GB available disk space
 
-## Important Notes
+## Architecture Overview
 
-- Both Fuseki servers run without authentication by default in this development setup. This is not suitable for production environments.
-- The API and GUI communicate through localhost URLs. If you need to access these services from other machines, you will need to adjust the configuration.
-- Some npm packages may show deprecation warnings during installation. These do not affect functionality in development.
+The system consists of four main components:
+- **Fuseki RDF Stores**: Provider (port 3030) and Consumer (port 3031) databases
+- **Backend API**: Express.js REST API (port 5000) that proxies SPARQL queries
+- **Frontend GUI**: React application (port 3000) providing the query interface
+- **EDC Connectors**: Provider (port 9191) and Consumer (port 9192) dataspace connectors
 
-## Installation Steps
+## Authentication
 
-### 1. Clone the Repository
+- SPARQL query endpoints: No authentication required
+- Fuseki web administration interface: Username `admin`, Password `pw`
+- The GUI and API interact with SPARQL endpoints only and do not require credentials
+
+## Installation
+
+### 1. Clone Repository
 
 ```bash
 git clone <repository-url>
 cd Dataspace-Query-Portal
 ```
 
-### 2. Install Dependencies
+### 2. Install Node Dependencies
 
-#### Backend API
+Install dependencies for all three Node.js services:
+
 ```bash
+# Backend API
 cd api
 npm install
 cd ..
-```
 
-#### Frontend GUI
-```bash
+# Frontend GUI
 cd gui
 npm install
 cd ..
-```
 
-**Note:** The GUI requires react-scripts v5.0.1 or compatible. If you see errors during `npm start`, ensure the package.json has the correct version.
-
-#### EDC Connector
-```bash
+# EDC Connector
 cd edc
 npm install
 cd ..
@@ -51,8 +55,7 @@ cd ..
 
 ### 3. Start Docker Services
 
-First start the Docker desktop app
-Start the Fuseki servers and EDC connectors using Docker Compose:
+Ensure Docker Desktop is running, then start all containerized services:
 
 ```bash
 docker-compose up -d
@@ -63,64 +66,39 @@ This will start:
 - Consumer Fuseki on port 3031
 - EDC Provider Connector on port 9191
 - EDC Consumer Connector on port 9192
+command starts:
+- Fuseki Provider (port 3030) with dataset `provider-ds`
+- Fuseki Consumer (port 3031) with dataset `consumer-ds`
+- EDC Provider Connector (port 9191)
+- EDC Consumer Connector (port 9192)
 
-Both Fuseki servers are configured to run without authentication for development purposes.
+The system includes init containers that automatically create datasets and load sample data from `data/sample-data.ttl` (126 RDF triples). Allow 30 seconds for full initialization.
 
-Check that all services are running:
+Verify all containers are running:
+
 ```bash
 docker-compose ps
 ```
 
-### 4. Verify Services are Running
+### 4. Verify Data Loading
 
-Wait a few seconds for all services to fully initialize. You can verify the Fuseki servers are responding:
-
-```bash
-# Check Provider Fuseki
-curl.exe http://localhost:3030/
-
-# Check Consumer Fuseki
-curl.exe http://localhost:3031/
-```
-
-Both should return the Fuseki web interface HTML.
-
-### 5. Create and Populate Datasets
-
-The Fuseki servers start without pre-created datasets. You can create them using curl commands:
+Confirm that sample data has been loaded successfully:
 
 ```bash
-# Create provider-ds dataset on Provider Fuseki
-curl.exe -X POST "http://localhost:3030/$/datasets" `
-  -H "Content-Type: application/x-www-form-urlencoded" `
-  -d "dbName=provider-ds&dbType=TDB2"
-
-# Create consumer-ds dataset on Provider Fuseki
-curl.exe -X POST "http://localhost:3030/$/datasets" `
-  -H "Content-Type: application/x-www-form-urlencoded" `
-  -d "dbName=consumer-ds&dbType=TDB2"
-
-# Create consumer-ds dataset on Consumer Fuseki
-curl.exe -X POST "http://localhost:3031/$/datasets" `
-  -H "Content-Type: application/x-www-form-urlencoded" `
-  -d "dbName=consumer-ds&dbType=TDB2"
-```
-
-Verify the datasets were created:
-```bash
+# Verify dataset creation
 curl.exe http://localhost:3030/$/datasets
+
+# Count loaded triples (expected: 126)
+curl.exe "http://localhost:3030/provider-ds/query?query=SELECT%20(COUNT(*)%20as%20?count)%20WHERE%20{?s%20?p%20?o}"
 ```
 
-You should see the created datasets listed in JSON format.
+To manually reload data if needed, execute: `.\load-data.ps1`
 
-### 6. Start Backend API
+Refer to [AUTO_LOAD_DATA.md](AUTO_LOAD_DATA.md) for sample data schema and query examples.
 
-In a new terminal window, navigate to the api directory and start the backend server:
+### 5. Start Backend API
 
-```bash
-cd api
-npm install
-npm start
+Open a new terminal session and start the Express.js API
 ```
 
 The API will start on port 5000 and connect to the Fuseki servers and EDC connectors.
@@ -139,85 +117,58 @@ npm start
 This will automatically open the portal in your browser at http://localhost:3000. If it doesn't open automatically, you can navigate there manually.
 
 ### Running Status Summary
-
-You should now have multiple processes running in separate terminals:
-- **Terminal 1:** Docker containers (Fuseki servers and EDC connectors)
-- **Terminal 2:** Backend API on http://localhost:5000
-- **Terminal 3:** Frontend GUI on http://localhost:3000
-
-All three must be running for the system to function correctly.
-
-## Accessing the System
-
-| Component | URL | Purpose |
-|-----------|-----|---------|
-| Query Portal | http://localhost:3000 | Web UI for querying |
-| Backend API | http://localhost:5000 | REST API |
-| Fuseki Provider | http://localhost:3030 | RDF store 1 |
-| Fuseki Consumer | http://localhost:3031 | RDF store 2 |
-| EDC Provider | http://localhost:9191 | Dataspace connector 1 |
-| EDC Consumer | http://localhost:9192 | Dataspace connector 2 |
-
-## Testing the Setup
-
-Once everything is running, you can verify the system is working correctly:
-
-### 1. Test the Fuseki Server
-
-Access the Fuseki web interface directly:
+start
 ```
+
+The API listens on port 5000 and provides REST endpoints for querying Fuseki servers.
+
+### 6. Start Frontend GUI
+
+Open another terminal session and start the React development server:
+
+```bash
+cd gui
+npm start
+```
+
+The GUI will be accessible at http://localhost:3000. The browser should open automatically.
+
+### Runtime Requirements
+
+The following processes must remain active concurrently:
+- Docker containers (Fuseki + EDC connectors)
+- Backend API server (port 5000)
+- Frontend development server (port 3000)
 http://localhost:3030
 ```
 
 You should see the Fuseki administration interface. Click on "Manage datasets" to see your created datasets.
 
 ### 2. Run a SPARQL Query Directly on Fuseki
+Service Endpoints
 
-In the Fuseki web UI, select your dataset (e.g., provider-ds) and navigate to the Query tab. You can run SPARQL queries directly:
+| Component | URL | Description |
+|-----------|-----|-------------|
+| Query Portal | http://localhost:3000 | React web interface |
+| Backend API | http://localhost:5000 | REST API endpoints |
+| Fuseki Provider | http://localhost:3030 | Primary RDF database |
+| Fuseki Consumer | http://localhost:3031 | Secondary RDF database |
+| EDC Provider | http://localhost:9191 | Provider dataspace connector |
+| EDC Consumer | http://localhost:9192 | Consumer dataspace connector |
 
-```sparql
-SELECT ?s ?p ?o
-WHERE {
-  ?s ?p ?o
-}
-LIMIT 10
-```
+## Verification
 
-### 3. Test the Backend API (when running)
+### API Health Check
 
 ```bash
 curl.exe http://localhost:5000/health
 ```
 
-This should return a response indicating the API is running.
+Expected response: `{"status":"ok","timestamp":"<ISO-8601-timestamp>"}`
 
-### 4. Test the Frontend GUI
+### Query API via Command Line
 
-Open your browser and navigate to:
-```
-http://localhost:3000
-```
-
-You should see the Dataspace Query Portal interface.
-
-### 5. Run a Query Through the API
-
-When the API is running, you can submit SPARQL queries through the REST endpoint:
-
-```bash
-curl.exe -X POST http://localhost:5000/api/query `
-  -H "Content-Type: application/json" `
-  -d '{
-    "datasourceId": "provider-ds",
-    "sparqlQuery": "SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10"
-  }'
-```
-
-## Troubleshooting
-
-### Fuseki not starting
-- Verify Docker Desktop is running
-- Check that ports 3030 and 3031 are not in use by other applications
+Test the query endpoint using PowerShell
 - Review Docker logs: `docker-compose logs fuseki-provider`
 
 ### Fuseki requires authentication when I didn't set it
@@ -251,20 +202,17 @@ curl.exe -X POST http://localhost:5000/api/query `
   ```
 - The script uses `admin:admin123` credentials and uploads data to both provider and consumer datasets
 - If you need to manually upload with curl, use:
-  ```powershell
-  curl.exe -u "admin:admin123" -X PUT "http://localhost:3030/provider-ds/data?default" `
-    -H "Content-Type: text/turtle" --data-binary "@data/sample-data.ttl"
-  ```
-- To verify data was loaded, query the dataset count:
-  ```powershell
-  curl.exe -u "admin:admin123" "http://localhost:3030/provider-ds/query?query=SELECT%20(COUNT(%3Fs)%20as%20%3Fcount)%20WHERE%20%7B%20%3Fs%20%3Fp%20%3Fo%20%7D"
-  ```
-- The response should show a count value greater than 0
+```powershell
+'{"datasourceId": "datasource-0", "sparqlQuery": "SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10"}' | Out-File -Encoding utf8 -NoNewline query.json
+curl.exe -X POST http://localhost:5000/api/query -H "Content-Type: application/json" -d "@query.json"
+```
 
-### npm install fails with vulnerabilities
-- If you see vulnerability warnings, they are typically safe in a development environment
-- You can suppress them by adding a `.npmrc` file with `legacy-peer-deps=true` if needed
-- Do not use `npm audit fix --force` as it may break dependencies
+Expected response includes a `results` object with SPARQL query bindings.erify data is loaded in Fuseki by running: `curl.exe "http://localhost:3030/provider-ds/query?query=SELECT%20(COUNT(*)%20as%20?count)%20WHERE%20{?s%20?p%20?o}"`
+- **Refresh the browser** (F5) to ensure updated GUI code is loaded
+- Check the API logs for specific error messages in the terminal where you ran `npm start`
+- Try the "Simple Triple" template first - if that works, the connection is fine
+- Use the **Persons** template button which has a pre-tested working query
+- If using a custom query, ensure all PREFIX declarations are included at the top
 
 ## Stopping Services
 
@@ -275,12 +223,72 @@ docker-compose down
 # Stop with volume cleanup (removes data)
 docker-compose down -v
 ```
+Docker Containers Not Starting
 
-## Sample Queries
+**Symptoms**: `docker-compose up -d` fails or containers exit immediately
 
-Once running, try these SPARQL queries in the GUI:
+**Resolution**:
+- Verify Docker Desktop is running
+- Check port availability: 3030, 3031, 9191, 9192
+- Review logs: `docker-compose logs fuseki-provider fuseki-consumer`
+- Restart containers: `docker-compose down && docker-compose up -d`
 
-### Get All Triples
+### API Connection Failures
+
+**Symptoms**: GUI shows "Failed to fetch datasources" or 500 errors
+
+**Resolution**:
+- Confirm API is running on port 5000: `curl.exe http://localhost:5000/health`
+- Verify Fuseki datasets exist: `curl.exe http://localhost:3030/$/datasets`
+- Check API terminal for error messages
+- Restart API server if it has crashed
+
+### GUI Shows "No Results Found"
+
+**Symptoms**: Queries execute without errors but return no data
+
+**Resolution**:
+- Verify data is loaded: `curl.exe "http://localhost:3030/provider-ds/query?query=SELECT%20(COUNT(*)%20as%20?count)%20WHERE%20{?s%20?p%20?o}"`
+- Expected count: 126 triples
+- Refresh browser (F5) to ensure latest GUI code is loaded
+- Test with "Simple Triple" template first to verify connectivity
+- Ensure all SPARQL PREFIX declarations are included in custom queries
+
+### SPARQL Query Syntax Errors
+
+**Symptoms**: Query fails with 400 or 500 errors
+
+**Resolution**:
+- Verify all required PREFIX declarations are present:
+  ```sparql
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+  ```
+- Test query directly on Fuseki web UI (http://localhost:3030, login: admin/pw)
+- Check query syntax against SPARQL 1.1 specification
+
+### Data Not Loaded After Initialization
+
+**Symptoms**: Query count returns 0 triples
+
+**Resolution**:
+- Wait 30 seconds after `docker-compose up -d` for init containers to complete
+- Check init container logs: `docker-compose logs fuseki-provider-init`
+- Manually reload data: `.\load-data.ps1`
+- Verify `data/sample-data.ttl` exists and is valid Turtle format
+
+### npm Dependency Warnings
+
+**Symptoms**: Vulnerability warnings during `npm install`
+
+**Resolution**:
+- Warnings are generally safe in development environments
+- Do not run `npm audit fix --force` as it may break dependencies
+- For react-scripts compatibility issues, verify gui/package.json specifies version 5.0.1SPARQL Queries
+
+Execute these queries through the GUI query interface or API:
+
+### Basic Triple Pattern
 ```sparql
 SELECT ?s ?p ?o
 WHERE {
@@ -289,8 +297,9 @@ WHERE {
 LIMIT 10
 ```
 
-### Get All People
+### Query People with Email Addresses
 ```sparql
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 SELECT ?person ?name ?email
@@ -301,8 +310,10 @@ WHERE {
 }
 ```
 
-### Get Projects and Owners
+### Query Projects with Owners
 ```sparql
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX ex: <http://example.org/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
@@ -315,15 +326,24 @@ WHERE {
 }
 ```
 
-## Next Steps
+Refer to [AUTO_LOAD_DATA.md](AUTO_LOAD_DATA.md) for complete sample data schema and additional query examples.
 
-After you have the system running, consider:
+## Production Deployment Considerations
 
-1. Upload sample RDF data to your datasets
-2. Explore the Fuseki web interface at http://localhost:3030 to run SPARQL queries directly
-3. Test the REST API endpoints to understand the data flow
-4. Customize the sample data in `data/sample-data.ttl` to match your use case
-5. Review the backend API code to understand how queries are processed
-6. Configure the EDC connectors with proper policies and authentication when moving to production
+Before deploying to production:
 
-For more information, see README.md
+1. Enable authentication on all Fuseki endpoints
+2. Configure HTTPS/TLS for all services
+3. Implement proper EDC connector policies and access control
+4. Replace sample data with production datasets
+5. Configure environment-specific settings via `.env` files
+6. Review and harden CORS policies in the API
+7. Build and deploy the React frontend as static assets
+8. Implement proper logging and monitoring
+9. Set up database backups for Fuseki persistent volumes
+
+## Additional Resources
+
+- [README.md](README.md) - Project overview and architecture
+- [AUTO_LOAD_DATA.md](AUTO_LOAD_DATA.md) - Sample data documentation
+- [API.md](API.md) - REST API endpoint reference

@@ -11,16 +11,33 @@ services:
       - "3030:3030"
     volumes:
       - ./data/sample-data.ttl:/staging/sample-data.ttl
-      - ./shiro.ini:/etc/fuseki/shiro.ini
+      - ./init-fuseki.sh:/staging/init-fuseki.sh
       - fuseki-provider-data:/fuseki
     environment:
-      - ADMIN_PASSWORD=admin123
-      - FUSEKI_OPTS=-Dorg.apache.jena.fuseki.mgtServiceAuthenticationRequired=false
+      - ADMIN_PASSWORD=pw
+      - FUSEKI_DATASET_1=provider-ds
+      - FUSEKI_DATASET_2=consumer-ds
+      - TDB_VERSION=TDB2
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3030/"]
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  # Init script runner for provider
+  fuseki-provider-init:
+    image: curlimages/curl:latest
+    container_name: fuseki-provider-init
+    depends_on:
+      fuseki-provider:
+        condition: service_healthy
+    volumes:
+      - ./data/sample-data.ttl:/staging/sample-data.ttl
+      - ./init-fuseki.sh:/staging/init-fuseki.sh
+    environment:
+      - FUSEKI_HOST=fuseki-provider:3030
+    entrypoint: ["/bin/sh", "/staging/init-fuseki.sh"]
+    restart: "no"
 
   # Consumer Fuseki Server
   fuseki-consumer:
@@ -32,16 +49,32 @@ services:
       - "3031:3030"
     volumes:
       - ./data/sample-data.ttl:/staging/sample-data.ttl
-      - ./shiro.ini:/etc/fuseki/shiro.ini
+      - ./init-fuseki.sh:/staging/init-fuseki.sh
       - fuseki-consumer-data:/fuseki
     environment:
-      - ADMIN_PASSWORD=admin123
-      - FUSEKI_OPTS=-Dorg.apache.jena.fuseki.mgtServiceAuthenticationRequired=false
+      - ADMIN_PASSWORD=pw
+      - FUSEKI_DATASET_1=consumer-ds
+      - TDB_VERSION=TDB2
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3030/"]
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  # Init script runner for consumer
+  fuseki-consumer-init:
+    image: curlimages/curl:latest
+    container_name: fuseki-consumer-init
+    depends_on:
+      fuseki-consumer:
+        condition: service_healthy
+    volumes:
+      - ./data/sample-data.ttl:/staging/sample-data.ttl
+      - ./init-fuseki.sh:/staging/init-fuseki.sh
+    environment:
+      - FUSEKI_HOST=fuseki-consumer:3030
+    entrypoint: ["/bin/sh", "/staging/init-fuseki.sh"]
+    restart: "no"
 
   # EDC Provider Connector (simplified mock)
   edc-provider:

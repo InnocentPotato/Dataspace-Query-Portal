@@ -1,6 +1,7 @@
 # PowerShell script to load RDF data into Fuseki datasets using curl.exe
 # Usage: .\load-data.ps1
-# This script uploads the sample data to both provider and consumer datasets
+# NOTE: With the updated Docker setup, data is automatically loaded on container startup.
+# This script is only needed if you want to reload or update data after containers are running.
 # Requires: curl.exe (typically available on Windows 10/11)
 # Note: Authentication is disabled in development mode (shiro.ini configured for 'anon' access)
 
@@ -9,6 +10,12 @@ param(
     [string]$ConsumerFusekiUrl = "http://localhost:3031",
     [string]$DataFile = ".\data\sample-data.ttl"
 )
+
+Write-Host "===== Fuseki Data Reload =====" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "NOTE: Data should already be loaded automatically when containers started." -ForegroundColor Yellow
+Write-Host "This script is only for manual reload if needed." -ForegroundColor Yellow
+Write-Host ""
 
 # Check if curl.exe exists
 if (-not (Get-Command curl.exe -ErrorAction SilentlyContinue)) {

@@ -39,7 +39,8 @@ SELECT DISTINCT ?class
 WHERE {
   ?instance rdf:type ?class
 }`,
-    'Persons': `PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    'Persons': `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 SELECT ?person ?name ?age
 WHERE {
@@ -47,7 +48,8 @@ WHERE {
           foaf:name ?name ;
           foaf:age ?age .
 }`,
-    'Properties': `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    'Properties': `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?property ?domain ?range
 WHERE {
