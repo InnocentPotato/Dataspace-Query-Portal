@@ -29,11 +29,11 @@ The EDC (Eclipse Dataspace Connector) integration provides a simplified connecto
 ## Simplified Connector
 
 This implementation focuses on **data querying** without:
-- ❌ Policy enforcement
-- ❌ Contract negotiation
-- ❌ Access control lists
-- ❌ Digital signatures
-- ❌ Audit logging
+- Policy enforcement
+- Contract negotiation
+- Access control lists
+- Digital signatures
+- Audit logging
 
 For production use, consider implementing:
 - Authentication and authorization
