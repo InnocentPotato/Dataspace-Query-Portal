@@ -328,14 +328,14 @@ npm install
 
 ## Success Indicators
 
-- ✅ Can run `./start.sh` without errors
-- ✅ All 4 Docker services running
-- ✅ Can access portal at http://localhost:3000
-- ✅ Can execute sample SPARQL queries
-- ✅ Results display correctly
-- ✅ No console errors
-- ✅ Can access Fuseki UI
-- ✅ Can access EDC endpoints
+-  Can run `./start.sh` without errors
+-  All 4 Docker services running
+-  Can access portal at http://localhost:3000
+-  Can execute sample SPARQL queries
+-  Results display correctly
+-  No console errors
+-  Can access Fuseki UI
+-  Can access EDC endpoints
 
 ---
 
