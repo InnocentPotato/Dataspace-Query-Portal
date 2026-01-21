@@ -12,12 +12,11 @@ WHERE {
 }
 LIMIT 10`);
 
-  const [limit, setLimit] = useState('1000');
   const queryAll = true; // Always query all datasources
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onQuery({ sparqlQuery, limit: parseInt(limit), queryAll });
+    onQuery({ sparqlQuery, queryAll });
   };
 
   const loadTemplate = (template) => {
@@ -71,17 +70,6 @@ WHERE {
               <p className="no-datasources">No datasources available</p>
             )}
           </div>
-        </div>
-
-        <div className="form-group">
-          <label>Query Limit</label>
-          <input 
-            type="number"
-            value={limit}
-            onChange={(e) => setLimit(e.target.value)}
-            min="1"
-            max="10000"
-          />
         </div>
 
         <div className="templates">
