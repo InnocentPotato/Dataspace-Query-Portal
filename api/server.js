@@ -163,15 +163,16 @@ app.get('/api/datasources/:id/catalog', async (req, res) => {
       });
     }
 
-    // Query for classes
+    // Query for classes (instances of rdf:type)
     const classQuery = `
       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       
-      SELECT DISTINCT ?class ?label WHERE {
-        ?class rdf:type rdfs:Class .
-        OPTIONAL { ?class rdfs:label ?label }
+      SELECT DISTINCT ?class (COUNT(?instance) as ?count) WHERE {
+        ?instance rdf:type ?class .
       }
+      GROUP BY ?class
+      ORDER BY DESC(?count)
       LIMIT 100
     `;
 

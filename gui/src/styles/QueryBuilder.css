@@ -72,6 +72,55 @@
   cursor: pointer;
 }
 
+.datasources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 2px solid #e0e0e0;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.datasource-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.datasource-icon {
+  font-size: 1rem;
+}
+
+.datasource-name {
+  font-weight: 600;
+  color: #333;
+  min-width: 120px;
+}
+
+.datasource-endpoint {
+  background: #667eea15;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  color: #667eea;
+  flex: 1;
+}
+
+.no-datasources {
+  color: #999;
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+  padding: 0.5rem;
+}
+
 .templates {
   display: flex;
   flex-direction: column;
@@ -86,7 +135,7 @@
 
 .template-buttons {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
 }
 
