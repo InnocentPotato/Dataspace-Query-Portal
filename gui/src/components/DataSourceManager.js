@@ -85,19 +85,26 @@ function DataSourceManager({ datasources, isLoading, onRefresh }) {
               </div>
             )}
 
-            {catalogData?.datasourceId === ds.id && catalogData.classes.length > 0 && (
+            {catalogData?.datasourceId === ds.id && (
               <div className="catalog-panel">
-                <h4>Classes ({catalogData.classes.length})</h4>
-                <div className="classes-list">
-                  {catalogData.classes.slice(0, 10).map((cls, idx) => (
-                    <div key={idx} className="class-item">
-                      <code>{cls.class?.value?.split('/').pop() || 'Unknown'}</code>
+                {catalogData.classes.length > 0 ? (
+                  <>
+                    <h4>Classes ({catalogData.classes.length})</h4>
+                    <div className="classes-list">
+                      {catalogData.classes.slice(0, 10).map((cls, idx) => (
+                        <div key={idx} className="class-item">
+                          <code>{cls.class?.value?.split(/[/#]/).pop() || 'Unknown'}</code>
+                          {cls.count && <span className="count-badge">{cls.count.value} instances</span>}
+                        </div>
+                      ))}
+                      {catalogData.classes.length > 10 && (
+                        <p className="more-text">... and {catalogData.classes.length - 10} more</p>
+                      )}
                     </div>
-                  ))}
-                  {catalogData.classes.length > 10 && (
-                    <p className="more-text">... and {catalogData.classes.length - 10} more</p>
-                  )}
-                </div>
+                  </>
+                ) : (
+                  <p>No classes found</p>
+                )}
               </div>
             )}
           </div>

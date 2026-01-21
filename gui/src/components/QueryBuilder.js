@@ -13,7 +13,7 @@ WHERE {
 LIMIT 10`);
 
   const [limit, setLimit] = useState('1000');
-  const [queryAll, setQueryAll] = useState(false);
+  const queryAll = true; // Always query all datasources
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,15 +48,7 @@ WHERE {
           foaf:name ?name ;
           foaf:age ?age .
 }`,
-    'Properties': `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-SELECT ?property ?domain ?range
-WHERE {
-  ?property rdf:type rdf:Property ;
-            rdfs:domain ?domain ;
-            rdfs:range ?range .
-}`
+    'Custom Query': ``
   };
 
   return (
@@ -65,28 +57,20 @@ WHERE {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Data Source</label>
-          <select 
-            value={selectedDatasource || ''}
-            onChange={(e) => onDatasourceChange(e.target.value)}
-            disabled={queryAll}
-          >
-            {datasources.map(ds => (
-              <option key={ds.id} value={ds.id}>
-                {ds.name} ({ds.endpoint})
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group checkbox">
-          <input 
-            type="checkbox"
-            id="queryAll"
-            checked={queryAll}
-            onChange={(e) => setQueryAll(e.target.checked)}
-          />
-          <label htmlFor="queryAll">Query all datasources</label>
+          <label>Querying All Data Sources</label>
+          <div className="datasources-list">
+            {datasources.length > 0 ? (
+              datasources.map(ds => (
+                <div key={ds.id} className="datasource-item">
+                  <span className="datasource-icon">🗄️</span>
+                  <span className="datasource-name">{ds.name}</span>
+                  <code className="datasource-endpoint">{ds.endpoint}</code>
+                </div>
+              ))
+            ) : (
+              <p className="no-datasources">No datasources available</p>
+            )}
+          </div>
         </div>
 
         <div className="form-group">
