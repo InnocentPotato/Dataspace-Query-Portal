@@ -118,7 +118,7 @@ function App() {
       </main>
 
       <footer className="app-footer">
-        <p>Dataspace Query Portal v1.0 | Powered by Eclipse EDC & Apache Jena</p>
+        <p>Dataspace Query Portal v1.0</p>
       </footer>
     </div>
   );
