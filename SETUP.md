@@ -4,105 +4,68 @@ This document provides comprehensive instructions to set up the Dataspace Query 
 
 ## Prerequisites
 
-*   **Node.js**: v18 or higher (with npm)
-*   **Docker Desktop**: With Docker Compose enabled
+*   **Docker Desktop**: With Docker Compose enabled (v1.29+)
 *   **Git**: For version control
-*   **Disk Space**: Minimum 2GB available
+*   **Disk Space**: Minimum 3GB available
+*   **Available Ports**: 3000, 3030, 3031, 5000, 9191, 9192
 
 ## Architecture Overview
 
-The setup launches four containerized background services and two local Node.js processes:
-1.  **Fuseki Provider & Consumer**: RDF Databases (Docker)
-2.  **EDC Connector Mocks**: Simulating Dataspace control plane (Docker)
-3.  **Backend API**: Express server (Local Node.js)
-4.  **Frontend GUI**: React app (Local Node.js)
+The setup launches six fully containerized services:
+1.  **Frontend GUI**: React application served via Nginx
+2.  **Backend API**: Node.js Express server
+3.  **Fuseki Provider & Consumer**: RDF Databases
+4.  **EDC Connector Mocks**: Simulating Dataspace control plane
 
 ---
 
 ## Installation & Startup
 
-### 1. Clone & Install Dependencies
+### 1. Clone Repository
 
-⚠️ **Important**: All commands must be run from the project root directory (`Dataspace-Query-Portal`)
+All commands must be run from the project root directory (`Dataspace-Query-Portal`).
 
 **Bash/Linux/macOS:**
 ```bash
-git clone <repository-url>
+git clone https://github.com/InnocentPotato/Dataspace-Query-Portal
 cd Dataspace-Query-Portal
-
-# Install dependencies for all microservices
-npm install --prefix api
-npm install --prefix gui
-npm install --prefix edc
 ```
 
 **PowerShell/Windows:**
 ```powershell
 git clone <repository-url>
 cd Dataspace-Query-Portal
-
-# Install dependencies for all microservices
-npm install --prefix api
-npm install --prefix gui
-npm install --prefix edc
 ```
 
-> **Note**: The GUI installation may show 9 vulnerabilities in development dependencies. These are safe to ignore for local development as they only affect build tools, not the production application.
+### 2. Start All Services
 
-### 2. Start Infrastructure (Docker)
-
-Initialize the databases and connectors from the project root:
-//This requires Docker Desktop to be running in the background
+Ensure Docker Desktop is running. Execute this single command from the project root:
 
 **Bash/Linux/macOS:**
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
 **PowerShell/Windows:**
 ```powershell
+docker-compose up
+```
+
+To run in the background, append the `-d` flag:
+
+```bash
 docker-compose up -d
 ```
 
-*Wait approximately 30 seconds for the containers to initialize and the datasets to be created.*
+### 3. Access the Portal
 
-### 3. Start Application Services
+Once the output shows that all services are healthy (approximately 15-30 seconds), open your browser and navigate to:
 
-It is recommended to run these in **separate terminal windows** to monitor logs.
-
-**Terminal A: Backend API**
-
-*Bash/Linux/macOS:*
-```bash
-cd api
-npm start
-# Runs on port 5000
+```
+http://localhost:3000
 ```
 
-*PowerShell/Windows:*
-```powershell
-cd api
-npm start
-# Runs on port 5000
-```
-
-**Terminal B: Frontend GUI**
-
-*Bash/Linux/macOS:*
-```bash
-cd gui
-npm start
-# Runs on port 3000
-```
-
-*PowerShell/Windows:*
-```powershell
-cd gui
-npm start
-# Runs on port 3000
-```
-
-The browser should automatically open to [http://localhost:3000](http://localhost:3000).
+All services are automatically configured and ready for use. No additional setup required.
 
 ---
 

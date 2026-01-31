@@ -85,10 +85,12 @@ When a user executes a query, the data flows through the system as follows:
 ## Component Details
 
 ### 1. Frontend (GUI)
-Built with **React 18**.
-*   **State Management**: Uses React Hooks (`useState`, `useEffect`) to manage fetching states and UI tabs.
-*   **Interaction**: `Axios` handles asynchronous communication with the backend.
-*   **Styling**: Custom CSS3 variables for theming and grid layouts.
+Built with **React 18** and served via **Nginx**.
+*   **State Management**: React Hooks (`useState`, `useEffect`) manage UI state and data fetching.
+*   **Communication**: `Axios` handles asynchronous HTTP requests to the backend.
+*   **Containerization**: Multi-stage Docker build optimizes the React application and serves it efficiently via Nginx.
+*   **Styling**: Custom CSS3 variables for theming and responsive grid layouts.
+*   **Reverse Proxy**: Nginx forwards API requests to the backend container via `/api/` path rewrite.
 
 ### 2. Backend API
 Built with **Node.js** and **Express**.

@@ -23,35 +23,14 @@ A distributed microservices system for querying RDF data across a simulated data
 
 ## Quick Start
 
-### Option 1: Automated Script (Recommended)
+Requirements: Docker Desktop with Docker Compose enabled.
 
-**Linux/Mac:**
+**All Platforms:**
 ```bash
-./start.sh
+docker-compose up
 ```
 
-**Windows:**
-```powershell
-.\start.bat
-```
-
-### Option 2: Docker & Manual Start
-
-1.  **Start Infrastructure**:
-    ```bash
-    docker-compose up -d
-    ```
-2.  **Start Services**:
-    Open two new terminals:
-    ```bash
-    # Terminal 1: Backend API
-    cd api && npm install && npm start
-    ```
-    ```bash
-    # Terminal 2: Frontend GUI
-    cd gui && npm install && npm start
-    ```
-3.  **Access Portal**: Open [http://localhost:3000](http://localhost:3000)
+Once services are healthy (15-30 seconds), open [http://localhost:3000](http://localhost:3000)
 
 ## Project Structure
 
@@ -74,10 +53,12 @@ Dataspace-Query-Portal/
 
 | Service | URL | Role |
 |---------|-----|------|
-| **Web Portal** | [http://localhost:3000](http://localhost:3000) | User Interface |
+| **Web Portal** | [http://localhost:3000](http://localhost:3000) | User Interface (Nginx) |
 | **Backend API** | [http://localhost:5000](http://localhost:5000) | Orchestration & Proxy |
 | **Provider Fuseki** | [http://localhost:3030](http://localhost:3030) | RDF Triple Store 1 |
 | **Consumer Fuseki** | [http://localhost:3031](http://localhost:3031) | RDF Triple Store 2 |
+| **Provider EDC** | [http://localhost:9191](http://localhost:9191) | Connector Signal Mock |
+| **Consumer EDC** | [http://localhost:9192](http://localhost:9192) | Connector Signal Mock |
 | **Provider EDC** | [http://localhost:9191](http://localhost:9191) | Connector Signal Mock |
 | **Consumer EDC** | [http://localhost:9192](http://localhost:9192) | Connector Signal Mock |
 

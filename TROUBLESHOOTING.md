@@ -2,102 +2,108 @@
 
 ## Common Issues & Solutions
 
-### Fuseki Services Not Starting
+### Services Not Starting
 
-**Symptom:** Docker containers fail to start or health check fails
+**Symptom:** Docker containers fail to start or health checks fail.
+
+**Solutions:**
+```bash
+# Check Docker is running
+docker ps
+
+# View detailed logs
+docker-compose logs
+
+# Full restart with clean state
+docker-compose down -v
+docker-compose up
+```
+
+**Common Causes:**
+- Docker daemon not running
+- Insufficient disk space or memory
+- Old volume data corrupted
+- System resources exhausted
+
+---
+
+### API Container Fails to Start
+
+**Symptom:** API container exits immediately or fails health check.
 
 **Solutions:**
 ```bash
 # Check logs
-docker-compose logs fuseki-provider
+docker-compose logs api
 
-# Remove old containers and volumes
-docker-compose down -v
+# Verify Fuseki containers are healthy
+docker-compose ps
 
-# Restart with fresh state
-docker-compose up -d
-
-# Wait longer for initialization (may take 30-60 seconds)
-sleep 60
-curl http://localhost:3030/
+# Rebuild the API image
+docker-compose up --build api
 ```
 
 **Causes:**
-- Port already in use
-- Insufficient disk space
-- Docker daemon not running
-- Old volume data corrupted
+- Fuseki not ready when API starts
+- Environment variables misconfigured
+- Port 5000 already in use on host
+
+---
+
+### GUI Not Loading
+
+**Symptom:** Port 3000 opens blank page or cannot reach http://localhost:3000
+
+**Solutions:**
+```bash
+# Check GUI container health
+docker-compose logs gui
+
+# Verify Nginx is running
+curl http://localhost:3000/
+
+# Rebuild GUI container
+docker-compose up --build gui
+```
+
+**Causes:**
+- React build failed during container creation
+- Port 3000 already in use
+- Insufficient memory for build process
 
 ---
 
 ### API Cannot Connect to Fuseki
 
-**Symptom:** API returns "connection timeout" or "ECONNREFUSED"
+**Symptom:** API returns connection timeout or ECONNREFUSED errors.
 
 **Solutions:**
 ```bash
-# Verify Fuseki is running
+# Verify Fuseki is running and healthy
+docker-compose ps
+
+# Check Fuseki logs
+docker-compose logs fuseki-provider
+
+# Test Fuseki directly
 curl http://localhost:3030/
 
-# Check API logs for errors
-npm start --prefix api
-
-# Verify network connectivity
-curl http://localhost:3030/$/datasets
+# Full restart
+docker-compose down -v
+docker-compose up
 ```
 
 **Causes:**
-- Fuseki not ready when API starts
-- Incorrect endpoint URL in .env
-- Container network issues
-
-**Fix:**
-```bash
-# Start Fuseki first
-docker-compose up -d
-
-# Wait 30 seconds
-sleep 30
-
-# Then start API
-cd api && npm start
-```
-
----
-
-### GUI Cannot Reach API
-
-**Symptom:** "Failed to fetch datasources" error in browser
-
-**Solutions:**
-```bash
-# Check API is running
-curl http://localhost:5000/health
-
-# Check CORS settings in api/server.js
-# Should have: app.use(cors());
-
-# Verify API port in GUI (check package.json proxy field)
-```
-
-**Causes:**
-- API not running
-- Wrong port number
-- CORS not enabled
-- Browser security policies
-
-**Debug:**
-```bash
-# Open browser console (F12)
-# Check Network tab for API calls
-# Verify requests go to http://localhost:5000
-```
+- Fuseki not fully initialized when API starts
+- Container network misconfiguration
+- Fuseki port 3030 already in use
 
 ---
 
 ### Port Already in Use
 
-**Symptom:** "Address already in use" error
+**Symptom:** "Address already in use" or "Port already allocated" error
+````
 
 **Solutions:**
 
