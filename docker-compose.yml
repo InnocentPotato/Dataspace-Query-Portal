@@ -108,6 +108,57 @@ services:
       - PORT=9192
       - FUSEKI_URL=http://fuseki-consumer:3030/consumer-ds
 
+  # Backend API Service
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: api
+    ports:
+      - "5000:5000"
+    depends_on:
+      fuseki-provider:
+        condition: service_healthy
+      fuseki-consumer:
+        condition: service_healthy
+      edc-provider:
+        condition: service_started
+      edc-consumer:
+        condition: service_started
+    environment:
+      - NODE_ENV=production
+      - EDC_CONNECTOR_URL=http://edc-provider:9191
+      - FUSEKI_SERVER_1=http://fuseki-provider:3030/provider-ds
+      - FUSEKI_SERVER_2=http://fuseki-consumer:3030/consumer-ds
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - default
+
+  # Frontend GUI Service
+  gui:
+    build:
+      context: ./gui
+      dockerfile: Dockerfile
+    container_name: gui
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - default
+
 volumes:
   fuseki-provider-data:
   fuseki-consumer-data:

@@ -1,43 +1,33 @@
-# 🚀 Quick Reference Card
+# Quick Reference Card
 
 ## One-Page Cheat Sheet for Dataspace Query Portal
 
 ---
 
-## ⚡ Quick Start (Choose One)
+## Quick Start (Single Command)
 
-### Option 1: Linux/Mac - One Command
 ```bash
-./start.sh
+docker-compose up
 ```
 
-### Option 2: Windows - One Command
-```cmd
-start.bat
-```
-
-### Option 3: Manual Setup
-```bash
-npm install --prefix api && npm install --prefix gui
-docker-compose up -d
-npm start --prefix api &
-npm start --prefix gui
-```
+Access portal at http://localhost:3000 after services are healthy (15-30 seconds).
 
 ---
 
-##  Access URLs
+## Access URLs
 
-| What | URL |
-|------|-----|
+| Service | URL |
+|---------|-----|
 | Web Portal | http://localhost:3000 |
-| API | http://localhost:5000 |
-| Fuseki 1 | http://localhost:3030 |
-| Fuseki 2 | http://localhost:3031 |
+| Backend API | http://localhost:5000 |
+| Provider Fuseki | http://localhost:3030 |
+| Consumer Fuseki | http://localhost:3031 |
+| Provider EDC | http://localhost:9191 |
+| Consumer EDC | http://localhost:9192 |
 
 ---
 
-##  Sample SPARQL Queries
+## Sample SPARQL Queries
 
 ### Get All Data (10 results)
 ```sparql
@@ -74,7 +64,7 @@ WHERE {
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Health Check
 ```bash
@@ -112,10 +102,13 @@ curl http://localhost:5000/api/datasources/datasource-0/stats
 
 ---
 
-##  Docker Commands
+## Docker Commands
 
 ```bash
 # Start all services
+docker-compose up
+
+# Start in background
 docker-compose up -d
 
 # Stop all services
@@ -124,90 +117,111 @@ docker-compose down
 # View logs
 docker-compose logs
 
+# View logs for specific service
+docker-compose logs api
+
 # Restart a service
 docker-compose restart fuseki-provider
 
-# Remove everything (careful!)
+# Remove everything including volumes
 docker-compose down -v
 ```
 
 ---
 
-##  Common Fixes
+## Common Issues and Solutions
 
-### "Connection Refused" Error
+### Containers Not Starting
 ```bash
-# Make sure Docker is running
-docker-compose ps
+# Check Docker is running
+docker ps
 
-# Wait 30 seconds for startup
-sleep 30
+# View container logs
+docker-compose logs
+
+# Full restart
+docker-compose down -v
+docker-compose up
 ```
 
 ### Port Already in Use
 ```bash
-# Check what's using port 3000
-lsof -i :3000  # Mac/Linux
-netstat -ano | findstr :3000  # Windows
+# Mac/Linux - check port 3000
+lsof -i :3000
 
-# Kill the process
+# Windows - check port 3000
+netstat -ano | findstr :3000
+
+# Kill the process (replace PID)
 kill -9 <PID>  # Mac/Linux
 taskkill /PID <PID> /F  # Windows
 ```
 
-### Need Clean Restart
+### API Connection Refused
+```bash
+# Ensure all services are healthy
+docker-compose ps
+
+# Check if API is running
+curl http://localhost:5000/health
+
+# Wait for services to initialize (30 seconds on first run)
+docker-compose logs api
+```
+
+### Complete Reset
 ```bash
 docker-compose down -v
-rm -rf api/node_modules gui/node_modules edc/node_modules
-npm install --prefix api && npm install --prefix gui
-docker-compose up -d
-sleep 30
-npm start --prefix api &
-npm start --prefix gui
+docker-compose up
 ```
 
 ---
 
-##  File Locations
+## File Locations
 
 | Component | Location |
 |-----------|----------|
-| API Server | `api/server.js` |
-| Frontend | `gui/src/App.js` |
-| EDC Connector | `edc/index.js` |
-| Sample Data | `data/sample-data.ttl` |
-| Docker Config | `docker-compose.yml` |
+| Backend API | api/server.js |
+| Frontend Application | gui/src/App.js |
+| EDC Connector | edc/index.js |
+| Sample Data | data/sample-data.ttl |
+| Docker Configuration | docker-compose.yml |
+| API Dockerfile | api/Dockerfile |
+| GUI Dockerfile | gui/Dockerfile |
 
 ---
 
-## Documentation Map
+## Documentation Structure
 
-| Need | Read |
-|------|------|
-| Get Started | SETUP.md |
-| API Endpoints | API.md |
-| System Design | ARCHITECTURE.md |
-| Diagrams | VISUAL_GUIDE.md |
-| Problems | TROUBLESHOOTING.md |
-| Overview | README.md |
-| Navigate All | INDEX.md |
+| Document | Purpose |
+|----------|---------|
+| README.md | Overview and quick start |
+| SETUP.md | Detailed installation guide |
+| ARCHITECTURE.md | System design and components |
+| API.md | REST endpoint reference |
+| EDC.md | Dataspace connector details |
+| TROUBLESHOOTING.md | Problem solutions |
 
 ---
 
-## Debugging Tips
+## Debugging
 
-### Check Backend Logs
+### Check API Health
 ```bash
-# Terminal where API is running
-npm start --prefix api
-
-# Look for errors and server startup message
+curl http://localhost:5000/health
 ```
 
-### Check Frontend Logs
+### Monitor All Logs
 ```bash
-# Press F12 in browser
-# Go to Console tab
+docker-compose logs -f
+```
+
+### Browser Console Errors
+```
+Press F12 in browser
+Go to Console tab
+Check for error messages
+```
 # Look for network errors
 ```
 
