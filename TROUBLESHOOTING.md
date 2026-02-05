@@ -141,39 +141,76 @@ PORT=5001 npm start --prefix api
 
 ### Data Not Loading in Fuseki
 
-**Symptom:** SPARQL queries return no results
+**Symptom:** SPARQL queries return empty results, even though services are running correctly.
 
-**Solutions:**
+**Root Cause:** Initialization containers (`fuseki-provider-init`, `fuseki-consumer-init`) may have failed or skipped due to existing empty volumes.
 
-1. **Manual upload to Fuseki UI:**
-   - Open http://localhost:3030
-   - Click "Upload"
-   - Select `data/sample-data.ttl`
-   - Choose dataset `provider-ds`
-   - Upload
+**Quick Fix - Use Helper Script:**
 
-2. **Use Docker volume:**
+**Windows:**
+```powershell
+.\fix-empty-data.ps1
+```
+
+**Linux/Mac:**
+```bash
+chmod +x fix-empty-data.sh
+./fix-empty-data.sh
+```
+
+**Manual Fix:**
+
+1. **Stop and remove volumes:**
    ```bash
-   docker cp data/sample-data.ttl fuseki-provider:/staging/
+   docker-compose down -v
    ```
 
-3. **Verify data loaded:**
+2. **Restart services:**
    ```bash
-   curl "http://localhost:3030/provider-ds/sparql?query=SELECT%20%28COUNT%28*%29%20as%20%3Fcount%29%20WHERE%20%7B%20%3Fs%20%3Fp%20%3Fo%20%7D"
+   docker-compose up -d
    ```
+
+3. **Check initialization logs (wait 30 seconds):**
+   ```bash
+   docker-compose logs fuseki-provider-init fuseki-consumer-init
+   ```
+   
+   **Expected output:**
+   ```
+   fuseki-provider-init  | ✓ Data loaded into provider-ds!
+   fuseki-consumer-init  | ✓ Data loaded into consumer-ds!
+   ```
+
+4. **Verify data loaded:**
+   ```bash
+   curl "http://localhost:3030/provider-ds/query?query=SELECT%20(COUNT(*)%20as%20?count)%20WHERE%20{?s%20?p%20?o}"
+   ```
+   Should return `~126` triples.
+
+**Alternative - Manual Upload:**
+
+If automated loading fails, upload manually via Fuseki UI:
+- Open http://localhost:3030
+- Click "Upload"
+- Select `data/sample-data.ttl`
+- Choose dataset `provider-ds` (repeat for `consumer-ds`)
+- Upload
 
 ---
 
 ### Query Returns No Results
 
-**Symptom:** SPARQL query executes but returns empty results
+**Symptom:** SPARQL query executes successfully (200 OK) but returns empty results
 
-**Troubleshooting:**
+**Most Common Cause:** Data was not loaded during initialization. See [Data Not Loading in Fuseki](#data-not-loading-in-fuseki) above for the fix.
+
+**Other Troubleshooting Steps:**
 
 1. **Check if data is loaded:**
    ```sparql
    SELECT (COUNT(*) as ?count) WHERE { ?s ?p ?o }
    ```
+   If this returns 0, you need to reload data (see section above).
 
 2. **Use simpler query:**
    ```sparql

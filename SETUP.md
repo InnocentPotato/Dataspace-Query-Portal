@@ -123,10 +123,15 @@ docker-compose up -d
 
 Run these checks from the project root directory:
 
-1.  **Containers**: Run `docker ps` - ensure 4 containers are "Up".
-2.  **API Health**: Visit `http://localhost:5000/health` - should return JSON status.
-3.  **GUI Access**: Visit `http://localhost:3000` - Dashboard should load without errors.
-4.  **Query Test**: Use the "Simple Triple" template in the Query Builder and execute. You should see results.
+1.  **Containers**: Run `docker ps` - ensure 6 containers are "Up" (if init containers already exited, they won't show).
+2.  **Init Logs**: Check initialization completed successfully:
+    ```powershell
+    docker-compose logs fuseki-provider-init fuseki-consumer-init
+    ```
+    You should see "✓ Data loaded" messages. If not, see [Empty Query Results](#empty-query-results-data-not-loading) in Troubleshooting.
+3.  **API Health**: Visit `http://localhost:5000/health` - should return JSON status.
+4.  **GUI Access**: Visit `http://localhost:3000` - Dashboard should load without errors.
+5.  **Query Test**: Use the "Simple Triple" template in the Query Builder and execute. You should see results with data about people (Alice, Bob, Carol).
 
 ## Stopping the System
 
@@ -157,6 +162,88 @@ docker-compose down -v
 ---
 
 ## Troubleshooting
+
+### Empty Query Results (Data Not Loading)
+
+**Symptoms**: Queries execute successfully (200 OK) but return no results. The GUI shows empty result sets.
+
+**Cause**: The initialization containers that load sample data either failed or didn't run because Docker volumes from a previous session still exist.
+
+**Quick Fix - Use Helper Script**:
+
+*Windows PowerShell:*
+```powershell
+.\fix-empty-data.ps1
+```
+
+*Linux/macOS:*
+```bash
+chmod +x fix-empty-data.sh
+./fix-empty-data.sh
+```
+
+The script will automatically:
+- Stop all containers and remove volumes
+- Restart with fresh data
+- Show initialization logs
+- Verify data was loaded successfully
+
+**Manual Solution**:
+
+*Windows PowerShell:*
+```powershell
+# Stop all containers and remove volumes
+docker-compose down -v
+
+# Verify volumes are removed
+docker volume ls | Select-String "fuseki"
+
+# Restart with fresh volumes
+docker-compose up -d
+
+# Monitor initialization (wait ~30 seconds)
+docker-compose logs fuseki-provider-init fuseki-consumer-init
+```
+
+*Linux/macOS/Git Bash:*
+```bash
+# Stop all containers and remove volumes
+docker-compose down -v
+
+# Verify volumes are removed
+docker volume ls | grep fuseki
+
+# Restart with fresh volumes
+docker-compose up -d
+
+# Monitor initialization (wait ~30 seconds)
+docker-compose logs fuseki-provider-init fuseki-consumer-init
+```
+
+**Expected Output**:
+You should see messages like:
+```
+fuseki-provider-init  | Waiting for Fuseki to be fully ready...
+fuseki-provider-init  | Loading sample data into provider-ds...
+fuseki-provider-init  | ✓ Data loaded into provider-ds!
+fuseki-consumer-init  | Loading sample data into consumer-ds...
+fuseki-consumer-init  | ✓ Data loaded into consumer-ds!
+```
+
+**Verification**:
+After initialization completes, verify data was loaded:
+
+*Windows PowerShell:*
+```powershell
+Invoke-RestMethod "http://localhost:3030/provider-ds/query?query=SELECT%20(COUNT(*)%20as%20?count)%20WHERE%20{?s%20?p%20?o}"
+```
+
+*Linux/macOS:*
+```bash
+curl "http://localhost:3030/provider-ds/query?query=SELECT%20(COUNT(*)%20as%20?count)%20WHERE%20{?s%20?p%20?o}"
+```
+
+Expected response should show `~126` triples.
 
 ### "Cannot find package.json" Error
 

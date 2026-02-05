@@ -32,6 +32,16 @@ docker-compose up
 
 Once services are healthy (15-30 seconds), open [http://localhost:3000](http://localhost:3000)
 
+**⚠️ Getting Empty Query Results?** The data may not have loaded. Run the fix script:
+```bash
+# Windows PowerShell:
+.\fix-empty-data.ps1
+
+# Linux/macOS:
+chmod +x fix-empty-data.sh && ./fix-empty-data.sh
+```
+See [SETUP.md - Troubleshooting](SETUP.md#empty-query-results-data-not-loading) for details.
+
 ## Project Structure
 
 ```
@@ -57,8 +67,6 @@ Dataspace-Query-Portal/
 | **Backend API** | [http://localhost:5000](http://localhost:5000) | Orchestration & Proxy |
 | **Provider Fuseki** | [http://localhost:3030](http://localhost:3030) | RDF Triple Store 1 |
 | **Consumer Fuseki** | [http://localhost:3031](http://localhost:3031) | RDF Triple Store 2 |
-| **Provider EDC** | [http://localhost:9191](http://localhost:9191) | Connector Signal Mock |
-| **Consumer EDC** | [http://localhost:9192](http://localhost:9192) | Connector Signal Mock |
 | **Provider EDC** | [http://localhost:9191](http://localhost:9191) | Connector Signal Mock |
 | **Consumer EDC** | [http://localhost:9192](http://localhost:9192) | Connector Signal Mock |
 
