@@ -23,7 +23,7 @@ if [ -f /staging/sample-data.ttl ]; then
       echo "Could not load into provider-ds"
     fi
   fi
-  
+
   # Try to load into consumer-ds
   echo "Loading sample data into consumer-ds..."
   if curl -sf -u "${FUSEKI_USER}:${FUSEKI_PASS}" "http://${FUSEKI_HOST}/$/datasets" | grep -q "consumer-ds"; then
@@ -36,7 +36,7 @@ if [ -f /staging/sample-data.ttl ]; then
       echo "Could not load into consumer-ds"
     fi
   fi
-  
+
   echo "======================================"
   echo "✓ Sample data loading complete!"
   echo "✓ Username: admin, Password: pw"

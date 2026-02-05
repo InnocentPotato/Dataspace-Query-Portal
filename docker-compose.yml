@@ -36,7 +36,7 @@ services:
       - ./init-fuseki.sh:/staging/init-fuseki.sh
     environment:
       - FUSEKI_HOST=fuseki-provider:3030
-    entrypoint: ["/bin/sh", "/staging/init-fuseki.sh"]
+    entrypoint: ["/bin/sh", "-c", "tr -d '\\r' < /staging/init-fuseki.sh | /bin/sh"]
     restart: "no"
 
   # Consumer Fuseki Server
@@ -73,7 +73,7 @@ services:
       - ./init-fuseki.sh:/staging/init-fuseki.sh
     environment:
       - FUSEKI_HOST=fuseki-consumer:3030
-    entrypoint: ["/bin/sh", "/staging/init-fuseki.sh"]
+    entrypoint: ["/bin/sh", "-c", "tr -d '\\r' < /staging/init-fuseki.sh | /bin/sh"]
     restart: "no"
 
   # EDC Provider Connector (simplified mock)

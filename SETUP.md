@@ -75,6 +75,7 @@ All services are automatically configured and ready for use. No additional setup
 
 The system is configured to **automatically load dummy data** when Docker containers start.
 *   **Mechanism**: The `init-fuseki.sh` script runs on container startup, creating `provider-ds` and `consumer-ds` datasets and populating them with `data/sample-data.ttl`.
+*   **Windows note**: The init script is executed through a CRLF-safe entrypoint to avoid line-ending issues when the repository is cloned on Windows.
 *   **Persistence**: Data is stored in Docker volumes (`fuseki-provider-data`, `fuseki-consumer-data`), ensuring it survives container restarts.
 
 ### Verifying Data Load
